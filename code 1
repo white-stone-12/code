@@ -1,0 +1,11 @@
+send_to_telegram() {
+  BOT_TOKEN=""
+  CHAT_ID=""
+  FILE=$1
+  MESSAGE=$2
+
+  curl -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto" \
+       -F chat_id="${CHAT_ID}" \
+       -F photo=@"$FILE" \
+       -F caption="$MESSAGE" > /dev/null
+}
